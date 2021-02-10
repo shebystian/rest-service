@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-service
+  labels:
+    app: api-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-v1
+  template:
+    metadata:
+      labels:
+        app: api-v1
+      annotations:
+        'consul.hashicorp.com/connect-inject': 'true'
+    spec:
+      containers:
+        - name: api
+          image: localhost:5000/apps/rest-service:fc46f2743d998ae24843ee7be0b26943d03da22d18963877c59d0e6ca79ee9af
+          ports:
+            - containerPort: 8082
+          env:
+            - name: 'LISTEN_ADDR'
+              value: '127.0.0.1:8082'
+            - name: 'NAME'
+              value: 'api-v1'
+            - name: 'MESSAGE'
+              value: 'Response from API v1'
