@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rest-service
+  name: rest-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: rest-service
+    spec:
+      containers:
+        - image: apps/rest-service
+          name: rest-service
+          resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rest-service
+  name: rest-service
+spec:
+  ports:
+  - name: 80-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: rest-service
+  type: ClusterIP
+status:
+  loadBalancer: {}
